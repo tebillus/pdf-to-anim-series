@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Usage: ./pdf-to-alpha_mov.sh input.pdf holds.csv background.{jpg, png}
+# Usage: ./pdf-to-superimpos.sh input.pdf holds.csv background.{jpg, png}
 # This script converts a PDF to SVGs (one-indexed), then to a video with frame holds.
 # White areas in the original PDF are translated to transparent (alpha) in the output video.
 # Video is then superimposed over a background image, JPG or PNG.
