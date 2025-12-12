@@ -9,6 +9,13 @@ to run the programs you can test out their functioning by copying one of the scr
 ./pdf-to-[alpha_mov].sh [input].pdf [holds].csv
 ```
 
+update
+
+full cycle
+```bash
+./pdf-to-[alpha_mov].sh [input].pdf [holds].csv [background].{jpg, png}
+```
+
 the input is the pdf file and the holds are the number of frame holds per drawing; the scripts are simplified so that the csvs can be raw frame counts
 
 e.g.
