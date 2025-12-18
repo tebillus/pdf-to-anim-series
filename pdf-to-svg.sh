@@ -3,7 +3,7 @@
 # Usage: ./pdf-to-svg.sh input.pdf
 # This script converts a PDF (single or multi-page) to SVG(s) via intermediate JPG and PBM files,
 # processing each page separately and cleaning up intermediates.
-# Requires: ImageMagick (for convert) and potrace installed.
+# Requires: ImageMagick and potrace installed.
 
 if [ $# -ne 1 ]; then
   echo "Usage: $0 input.pdf"
@@ -14,7 +14,7 @@ pdf_file="$1"
 base="${pdf_file%.pdf}"
 
 # Convert PDF to JPG(s) with density 150
-convert -density 150 "$pdf_file" "${base}-%03d.jpg"
+magick -density 150 "$pdf_file" "${base}-%03d.jpg"
 
 # Process each generated JPG
 for jpg in "${base}"-*.jpg; do
@@ -26,7 +26,7 @@ for jpg in "${base}"-*.jpg; do
   svg="${jpg%.jpg}.svg"
 
   # Convert JPG to PBM with dither and 2 colors
-  convert "$jpg" +dither -colors 2 "$pbm"
+  magick "$jpg" +dither -colors 2 "$pbm"
 
   # Convert PBM to SVG
   potrace "$pbm" -s -o "$svg"

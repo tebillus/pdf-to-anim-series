@@ -1,4 +1,6 @@
-if theres a problem run dos2unix on each file
+below was written 2025-12-18 --
+
+updated the scripts to work with ImageMagick 7
 
 below was written 2025-12-11 --
 

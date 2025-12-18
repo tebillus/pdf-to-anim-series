@@ -3,7 +3,7 @@
 # Usage: ./pdf-to-mp4.sh input.pdf holds.csv
 # This script converts a PDF to SVGs (one-indexed), then to a video with frame holds.
 # White areas in the original PDF are translated to transparent (alpha) in the output video.
-# Requires: ImageMagick (convert), potrace, ffmpeg (with prores support for alpha), ffprobe.
+# Requires: ImageMagick, potrace, ffmpeg (with prores support for alpha), ffprobe.
 # Adjust holds array to match the number of PDF pages and desired timings.
 
 if [ $# -ne 2 ]; then
@@ -21,7 +21,7 @@ holds=($(cat "$csv_file")) # For animation timing (one value per PDF page)
 svgs=()
 
 # Convert PDF to JPGs (temporary, zero-indexed)
-convert -density 150 "$pdf_file" "temp_${base}-%03d.jpg"
+magick -density 150 "$pdf_file" "temp_${base}-%03d.jpg"
 
 # Get dimensions from the first JPG using ffprobe
 first_jpg="temp_${base}-000.jpg"
@@ -42,7 +42,7 @@ for jpg in "temp_${base}"-*.jpg; do
   svg="${base}-$(printf %03d $i).svg"
 
   # Convert JPG to PBM with dither and 2 colors (black foreground, white background)
-  convert "$jpg" +dither -colors 2 "$pbm"
+  magick "$jpg" +dither -colors 2 "$pbm"
 
   # Convert PBM to SVG (potrace traces black; white becomes transparent)
   potrace "$pbm" -s -o "$svg"
@@ -61,7 +61,7 @@ out_frame=1
 
 for hold in "${holds[@]}"; do
   # Convert SVG to PNG (transparent background preserved)
-  convert "${base}-$(printf %03d $frame_num).svg" "temp.png"
+  magick "${base}-$(printf %03d $frame_num).svg" "temp.png"
   for ((j = 1; j <= hold; j++)); do
     cp "temp.png" "png_sequence/frame$(printf %05d $out_frame).png"
     ((out_frame++))
